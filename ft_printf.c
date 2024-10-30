@@ -6,13 +6,11 @@
 /*   By: dtrendaf <dtrendaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:31:24 by dtrendaf          #+#    #+#             */
-/*   Updated: 2024/10/29 17:59:20 by dtrendaf         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:52:12 by dtrendaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <unistd.h>
+#include "ft_printf.h"
 
 int	ft_putstr(va_list args)
 {
@@ -22,6 +20,13 @@ int	ft_putstr(va_list args)
 	char	*string;
 
 	string = va_arg(args, char *);
+	if (string == NULL)
+	{
+		temp = write(1,"(null)",6);
+		if (temp == -1)
+			return (-1);
+		return (temp);
+	}
 	i = 0;
 	output = 0;
 	while (string[i] != '\0')
@@ -34,15 +39,7 @@ int	ft_putstr(va_list args)
 	}	
 	return (output);
 }
-int ft_print_void_ptr (va_list args)
-{
-	unsigned long	adr;
-	char			*output;
-	
-	adr = va_arg(args, void *);
-	
-	
-}
+
 
 int ft_putchr(va_list args)
 {
@@ -53,28 +50,25 @@ int ft_putchr(va_list args)
 }
 int	cases(char c, va_list args)
 {
-	int	count;
-	
 	if (c == 'c')
-		return(count = ft_putchr(args));
+		return(ft_putchr(args));
 	else if (c == 's')
-		return(count = ft_putstr(args));
-	// else if(string == 'p')
-
-	// else if(string == 'd')
-
-	// else if(string == 'i')
-
-	// else if(string == 'u')
-
-	// else if(string == 'x')
-
-	// else if(string == 'X')
-
-	// else if(string == '%')
-	
-	// else
-		return (-1);
+		return(ft_putstr(args));
+	else if(c == 'p')
+		return(ft_print_void_ptr(args));
+	else if(c == 'd')
+		return(ft_putnbr(args));
+	else if(c == 'i')
+		return(ft_putnbr(args));
+	else if(c == 'u')
+		return(ft_putnbr_unsigned(args));
+	else if(c == 'x')
+		return(ft_dec_to_hex(0, args));
+	else if(c == 'X')
+		return(ft_dec_to_hex(1, args));
+	else if(c == '%')
+		return(ft_print_one('%'));
+	return (0);
 }
 
 
@@ -102,12 +96,14 @@ int	ft_printf(const char *string, ...)
 	return (chr_count);
 }
 
-int main(void)
-{
-	// int a = 111111;
-	// printf("%n",  a);
-	// printf("abdef");
-	char *string = "dali be ludo\n";
-	printf("the value of the custom function is: %d",ft_printf("ahahah %s", string));
-	// printf("this is %p", string);
-}
+// int main(void)
+// {
+// 	// int a = 111111;
+// 	// printf("%n",  a);
+// 	// printf("abdef");
+// 	// char *string = "dali be ludo\n";
+// 	// printf("the value of the custom function is: %d",ft_printf("ahahah %s", string));
+// 	printf("exp:%d ",printf("exp: %X\n",2147483));
+// 	printf("got:%d",ft_printf("got: %X\n",2147483));
+// 	// printf("this is %x", -2147483648 );
+// }
